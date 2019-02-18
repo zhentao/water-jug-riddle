@@ -95,7 +95,7 @@ public class WaterJugRiddle {
          * @param target
          * @return true if the water in either or both buckets equals the target.
          */
-        boolean check(final int target) {
+        private boolean check(final int target) {
             return firstJug == target || secondJug == target || firstJug + secondJug == target;
         }
 
@@ -106,19 +106,19 @@ public class WaterJugRiddle {
          * @param water
          * @return
          */
-        State fillFirstBucket(final int water) {
+        private State fillFirstBucket(final int water) {
             return new State(water, secondJug);
         }
 
-        State emptyFirstBucket() {
+        private State emptyFirstBucket() {
             return new State(0, secondJug);
         }
 
-        State fillSecondBucket(final int water) {
+        private State fillSecondBucket(final int water) {
             return new State(firstJug, water);
         }
 
-        State emptySecondBucket() {
+        private State emptySecondBucket() {
             return new State(firstJug, 0);
         }
 
@@ -127,7 +127,7 @@ public class WaterJugRiddle {
          * @param capacity the max amount of water the first jug can hold
          * @return a new State after the transfer
          */
-        State transferFromSecondToFirst(final int capacity) {
+        private State transferFromSecondToFirst(final int capacity) {
             // max amount of water can be transferred from second to first jug
             final int max = Math.min(capacity - firstJug, secondJug);
             return new State(firstJug + max, secondJug - max);
@@ -138,12 +138,12 @@ public class WaterJugRiddle {
          * @param capacity the max amount of water the second jug can hold
          * @return a new state after the transfer.
          */
-        State transferFromFirstToSecond(final int capacity) {
+        private State transferFromFirstToSecond(final int capacity) {
             final int max = Math.min(firstJug, capacity - secondJug);
             return new State(firstJug - max, secondJug + max);
         }
 
-        public List<State> newPossibleStates(final int capacityOfFirstJug, final int capacityOfSecondJug) {
+        List<State> newPossibleStates(final int capacityOfFirstJug, final int capacityOfSecondJug) {
             final List<State> states = new ArrayList<>();
             states.add(fillFirstBucket(capacityOfFirstJug));
             states.add(emptyFirstBucket());
@@ -189,7 +189,7 @@ public class WaterJugRiddle {
                         System.out.println(operations);
                     }
                     System.out.println();
-                } catch (final Exception e ) {
+                } catch (final Exception e) {
                     e.printStackTrace();
                     TimeUnit.MILLISECONDS.sleep(20);
                     scanner.next();
