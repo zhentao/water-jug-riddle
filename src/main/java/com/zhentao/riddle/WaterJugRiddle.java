@@ -6,7 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Scanner;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class WaterJugRiddle {
     /**
@@ -82,6 +84,11 @@ public class WaterJugRiddle {
             return firstJug == that.firstJug && secondJug == that.secondJug;
         }
 
+        @Override
+        public String toString() {
+            return "[" + firstJug + ", " + secondJug + "]";
+        }
+
         /**
          * check the water volume meets the target
          *
@@ -146,6 +153,48 @@ public class WaterJugRiddle {
             states.add(transferFromFirstToSecond(capacityOfSecondJug));
 
             return states;
+        }
+    }
+
+    public static void main(final String[] args) throws InterruptedException {
+        final WaterJugRiddle riddle = new WaterJugRiddle();
+        try (final Scanner scanner = new Scanner(System.in)) {
+            while (true) {
+                try {
+                    System.out.println("Please enter the capacity for the first jug (enter 0 to terminate):");
+                    final int first = scanner.nextInt();
+                    if (first == 0) {
+                        System.out.println("terminate the program");
+                        break;
+                    }
+                    System.out.println("Please enter the capacity for the second jug (enter 0 to terminate):");
+                    final int second = scanner.nextInt();
+                    if (second == 0) {
+                        System.out.println("terminate the program");
+                        break;
+                    }
+
+                    System.out.println("Please enter the target water volume (enter 0 to terminate):");
+                    final int target = scanner.nextInt();
+                    if (target == 0) {
+                        System.out.println("terminate the program");
+                        break;
+                    }
+
+                    final Queue<State> operations = riddle.solve(first, second, target);
+                    if (operations.isEmpty()) {
+                        System.out.println("No Solution");
+                    } else {
+                        System.out.println("total steps: " + operations.size());
+                        System.out.println(operations);
+                    }
+                    System.out.println();
+                } catch (final Exception e ) {
+                    e.printStackTrace();
+                    TimeUnit.MILLISECONDS.sleep(20);
+                    scanner.next();
+                }
+            }
         }
     }
 }
